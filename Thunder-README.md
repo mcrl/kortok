@@ -11,6 +11,7 @@ conda install python=3.9 -y # sentencepiece only supports python=3.9
 conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia -y
 conda install sentencepiece -c conda-forge -y
 
+pushd ~
 git clone https://github.com/NVIDIA/apex
 pushd apex
 pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" \
@@ -22,5 +23,6 @@ pip install pyarrow
 git clone https://github.com/pytorch/fairseq
 pushd fairseq
 pip install --editable ./
+popd
 popd
 ```
