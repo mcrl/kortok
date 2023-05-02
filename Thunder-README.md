@@ -9,7 +9,7 @@ We update package version to up-to-date ones, and maintain the code.
 conda activate kakao-kortok
 conda install python=3.9 -y # sentencepiece only supports python=3.9
 conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia -y
-pip install sentencepiece
+pip install sentencepiece packaging
 
 pushd ~
 git clone https://github.com/NVIDIA/apex
