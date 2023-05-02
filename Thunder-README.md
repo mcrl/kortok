@@ -1,12 +1,26 @@
 # README for TRG Researchers
 
-## Installation
+## Meeting requirements for FAIRSeq and KorTok
 
-For conda users, I used following steps
+As fairseq requirements have been changed, we need different version of packages.
+We update package version to up-to-date ones, and maintain the code.
 
 ```bash
 conda activate kakao-kortok
-conda install python=3.8 -y
-conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.2 -c pytorch -y
-conda install sentencepiece=0.1.91 -c conda-forge -y
+conda install python=3.10 -y
+conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia -y
+conda install sentencepiece -c conda-forge -y
+
+git clone https://github.com/NVIDIA/apex
+pushd apex
+pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" \
+  --global-option="--deprecated_fused_adam" --global-option="--xentropy" \
+  --global-option="--fast_multihead_attn" ./
+popd
+pip install pyarrow
+
+git clone https://github.com/pytorch/fairseq
+pushd fairseq
+pip install --editable ./
+popd
 ```
