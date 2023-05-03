@@ -12,15 +12,16 @@ import MeCab
 
 INPUT_CORPUS = "dataset/modoo-translation/ko_sentences.txt"
 OUTPUT_DIR = "./resources"
-
-TOKENIZER = MeCab.Tagger(f"--dicdir /home/n5/chanwoo/utils/mecab-ko/lib/mecab/dic/mecab-ko-dic")
+DEFAULT_DICT = "/usr/local/lib/mecab/dic/mecab-ko-dic"
+global_tokenizer = None  # type: Optional[MeCab.Tagger]
 
 
 def tokenize(text: str, space_symbol: str = "▃") -> List[str]:
+    global global_tokenizer
     text = text.strip()
     text_ptr = 0
     tokenized = []
-    for mor in TOKENIZER.parse(text).split("\n"):
+    for mor in global_tokenizer.parse(text).split("\n"):
         if "\t" in mor:
             splitted = mor.split("\t")
             token = splitted[0]
@@ -48,6 +49,8 @@ if __name__ == "__main__":
     parser.add_argument("--unk_piece", type=str, default="[UNK]", help="index=1")
     parser.add_argument("--bos_piece", type=str, default="[BOS]", help="index=2")
     parser.add_argument("--eos_piece", type=str, default="[EOS]", help="index=3")
+    parser.add_argument("--input_corpus", type=str, default=INPUT_CORPUS, help="input corpus path")
+    parser.add_argument("--dicdir", type=str, default=DEFAULT_DICT, help="mecab dictionary directory")
     parser.add_argument(
         "--special_symbols",
         type=str,
@@ -58,8 +61,11 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
     print(args)
 
+    global_tokenizer = MeCab.Tagger(f"-r /dev/null --dicdir {args['dicdir']}")
     output_dir = os.path.join(OUTPUT_DIR, f"mecab-{args['vocab_size']//1000}k")
     os.makedirs(output_dir, exist_ok=True)
+    if global_tokenizer is None:
+        raise RuntimeError("global_tokenizer is not initialized.")
 
     # save arguments info
     output_info_path = os.path.join(output_dir, "build_info.json")
@@ -72,7 +78,7 @@ if __name__ == "__main__":
     counter = Counter()
     start_time = time.time()
     print(f"start tokenization ...")
-    with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
+    with open(args["input_corpus"], "r", encoding="utf-8") as f:
         with Pool(args["n_jobs"]) as p:
             tokenized = p.map(tokenize_fn, f)
             counter.update(chain.from_iterable(tokenized))
