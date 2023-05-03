@@ -6,8 +6,9 @@ from collections import Counter
 
 from mosestokenizer import MosesTokenizer
 from tqdm import tqdm
+import multiprocessing as mp
 
-INPUT_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
+INPUT_CORPUS = "dataset/modoo-translation/ko_sentences.txt"
 OUTPUT_DIR = "./resources"
 
 

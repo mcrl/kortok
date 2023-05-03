@@ -4,9 +4,11 @@ import os
 
 import sentencepiece as spm
 
-INPUT_KO_CORPUS = "./dataset/wiki/kowiki-200420.txt"
-INPUT_EN_CORPUS = "./dataset/wiki/sample_en-wiki-200420.txt"  # for English SentencePiece(BPE) Tokenizer
-INPUT_MECAB_TOKENIZED_CORPUS = "./dataset/wiki/mecab_tokenized/mecab/kowiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
+INPUT_KO_CORPUS = "dataset/modoo-translation/ko_sentences.txt"
+INPUT_EN_CORPUS = "dataset/modoo-translation/en_sentences.txt"  # for English SentencePiece(BPE) Tokenizer
+INPUT_MECAB_TOKENIZED_CORPUS = (
+    "./dataset/wiki/mecab_tokenized/mecab/kowiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
+)
 
 OUTPUT_DIR = "./resources"
 

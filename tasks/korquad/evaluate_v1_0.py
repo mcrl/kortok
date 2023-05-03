@@ -59,7 +59,7 @@ def postprocess(text):
 
 def normalize_answer(s):
     def remove_(text):
-        """ 불필요한 기호 제거 """
+        """불필요한 기호 제거"""
         text = re.sub("'", " ", text)
         text = re.sub('"', " ", text)
         text = re.sub("《", " ", text)

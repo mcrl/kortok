@@ -7,8 +7,9 @@ from itertools import chain
 from multiprocessing import Pool
 from typing import List
 from unicodedata import normalize
+import multiprocessing as mp
 
-INPUT_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
+INPUT_CORPUS = "dataset/modoo-translation/ko_sentences.txt"
 OUTPUT_DIR = "./resources"
 
 
@@ -30,7 +31,7 @@ if __name__ == "__main__":
         default="[CLS],[SEP],[MASK]",
         help="Special tokens. You can pass a comma-separated list of special tokens.",
     )
-    parser.add_argument("--n_jobs", type=int, default=20)
+    parser.add_argument("--n_jobs", type=int, default=mp.cpu_count())
     args = vars(parser.parse_args())
     print(args)
 
