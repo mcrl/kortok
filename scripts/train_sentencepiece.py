@@ -7,7 +7,7 @@ import sentencepiece as spm
 INPUT_KO_CORPUS = "dataset/modoo-translation/ko_sentences.txt"
 INPUT_EN_CORPUS = "dataset/modoo-translation/en_sentences.txt"  # for English SentencePiece(BPE) Tokenizer
 INPUT_MECAB_TOKENIZED_CORPUS = (
-    "./dataset/wiki/mecab_tokenized/mecab/kowiki-200420.txt"  # for MeCab-SentencePiece Tokenizer
+    "dataset/modoo-translation/mecab_tokenized/ko_sentences.txt"  # for MeCab-SentencePiece Tokenizer
 )
 
 OUTPUT_DIR = "./resources"
@@ -27,6 +27,9 @@ if __name__ == "__main__":
     parser.add_argument("--bos_piece", type=str, default="[BOS]", help="index=2")
     parser.add_argument("--eos_piece", type=str, default="[EOS]", help="index=3")
     parser.add_argument("--unk_surface", type=str, default="[UNK]")
+    parser.add_argument("--input_ko_corpus", type=str, default=INPUT_KO_CORPUS, help="input korean corpus path")
+    parser.add_argument("--input_en_corpus", type=str, default=INPUT_EN_CORPUS, help="input english corpus path")
+    parser.add_argument("--input_mecab_corpus", type=str, default=INPUT_MECAB_TOKENIZED_CORPUS, help="input mecab corpus path")
     parser.add_argument(
         "--special_symbols",
         type=str,
@@ -41,13 +44,13 @@ if __name__ == "__main__":
 
     # set output dir
     if args["tokenizer_type"] == "ko":
-        input_corpus = INPUT_KO_CORPUS
+        input_corpus = args["input_ko_corpus"]
         output_dir = os.path.join(OUTPUT_DIR, f"sp-{int(args['vocab_size'])//1000}k")
     elif args["tokenizer_type"] == "en":
-        input_corpus = INPUT_EN_CORPUS
+        input_corpus = args["input_en_corpus"]
         output_dir = os.path.join(OUTPUT_DIR, f"en_sp-{int(args['vocab_size'])//1000}k")
     elif args["tokenizer_type"] == "mecab_tokenized":
-        input_corpus = INPUT_MECAB_TOKENIZED_CORPUS
+        input_corpus = args["input_mecab_corpus"]
         output_dir = os.path.join(OUTPUT_DIR, f"mecab_sp-{int(args['vocab_size'])//1000}k")
     else:
         raise ValueError
