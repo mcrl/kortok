@@ -6,7 +6,6 @@ from collections import Counter
 
 from mosestokenizer import MosesTokenizer
 from tqdm import tqdm
-import multiprocessing as mp
 
 INPUT_CORPUS = "dataset/modoo-translation/ko_sentences.txt"
 OUTPUT_DIR = "./resources"
@@ -20,6 +19,7 @@ if __name__ == "__main__":
     parser.add_argument("--unk_piece", type=str, default="[UNK]", help="index=1")
     parser.add_argument("--bos_piece", type=str, default="[BOS]", help="index=2")
     parser.add_argument("--eos_piece", type=str, default="[EOS]", help="index=3")
+    parser.add_argument("--input_corpus", type=str, default=INPUT_CORPUS, help="input corpus path")
     parser.add_argument(
         "--special_symbols",
         type=str,
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     counter = Counter()
     start_time = time.time()
     print(f"start tokenization ...")
-    with open(INPUT_CORPUS, "r", encoding="utf-8") as f:
+    with open(args["input_corpus"], "r", encoding="utf-8") as f:
         for line in tqdm(f):
             tokenized = tokenize(line.strip())
             counter.update(tokenized)
