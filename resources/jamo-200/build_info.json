@@ -1,9 +1,0 @@
-{
-    "vocab_size": 200,
-    "pad_piece": "[PAD]",
-    "unk_piece": "[UNK]",
-    "bos_piece": "[BOS]",
-    "eos_piece": "[EOS]",
-    "special_symbols": "[CLS],[SEP],[MASK]",
-    "n_jobs": 20
-}
