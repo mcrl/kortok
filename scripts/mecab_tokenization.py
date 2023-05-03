@@ -5,13 +5,14 @@ import time
 from functools import partial
 from multiprocessing import Pool
 from typing import List
+import multiprocessing as mp
 
 import MeCab
 
-INPUT_CORPUS = "./dataset/wiki/sample_ko-wiki-200420.txt"
-OUTPUT_DIR = "./dataset/wiki/mecab_tokenized"
+INPUT_CORPUS = "dataset/modoo-translation/ko_sentences.txt"
+OUTPUT_DIR = "./dataset/modoo-translation/mecab_tokenized"
 
-TOKENIZER = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
+TOKENIZER = MeCab.Tagger(f"-r/dev/null --dicdir /home/n5/chanwoo/utils/mecab-ko/lib/mecab/dic/mecab-ko-dic")
 
 
 def tokenize(text: str, space_symbol: str = "▃") -> List[str]:
@@ -40,7 +41,7 @@ def tokenize(text: str, space_symbol: str = "▃") -> List[str]:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--space_symbol", type=str, default="▃")
-    parser.add_argument("--n_jobs", type=int, default=20)
+    parser.add_argument("--n_jobs", type=int, default=mp.cpu_count())
     args = vars(parser.parse_args())
     print(args)
 
