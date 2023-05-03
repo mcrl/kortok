@@ -11,3 +11,7 @@ python scripts/build_jamo_vocab.py \
     --vocab=200 \
     --input_corpus dataset/modoo-translation/ko_sentences.txt
 
+# train char tokenizers
+python scripts/build_char_vocab.py \
+    --vocab=2000 \
+    --input_corpus dataset/modoo-translation/ko_sentences.txt
