@@ -10,12 +10,6 @@ python scripts/build_word_vocab.py \
     --vocab=64000 \
     --input_corpus $ko_corpus &
 
-# generate mecab tokenized corpus
-python scripts/mecab_tokenization.py \
-    --input_corpus $ko_corpus \
-    --output_dir dataset/modoo-translation/mecab_tokenized \
-    --dicdir $dict
-
 # train jamo tokenizers
 python scripts/build_jamo_vocab.py \
     --vocab=200 \
@@ -25,5 +19,22 @@ python scripts/build_jamo_vocab.py \
 python scripts/build_char_vocab.py \
     --vocab=2000 \
     --input_corpus $ko_corpus &
+
+# train mecab tokenizers
+python scripts/build_mecab_vocab.py \
+    --vocab_size=32000 \
+    --input_corpus $ko_corpus \
+    --dicdir $dict &
+
+python scripts/build_mecab_vocab.py \
+    --vocab_size=64000 \
+    --input_corpus $ko_corpus \
+    --dicdir $dict &
+
+# generate mecab tokenized corpus
+python scripts/mecab_tokenization.py \
+    --input_corpus $ko_corpus \
+    --output_dir dataset/modoo-translation/mecab_tokenized \
+    --dicdir $dict
 
 wait
