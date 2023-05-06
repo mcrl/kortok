@@ -1,5 +1,4 @@
 import json
-import os
 from typing import List
 
 import MeCab
@@ -8,8 +7,8 @@ from tokenizer.base import BaseTokenizer
 
 
 class MeCabTokenizer(BaseTokenizer):
-    def __init__(self, config_path: str):
-        self.mecab = MeCab.Tagger(f"--dicdir /usr/local/lib/mecab/dic/mecab-ko-dic")
+    def __init__(self, config_path: str, mecab_path: str = "/usr/local/bin/mecab/dic/mecab-ko-dic"):
+        self.mecab = MeCab.Tagger(f"--dicdir {mecab_path}")
         with open(config_path) as f:
             self.config: dict = json.load(f)
 
