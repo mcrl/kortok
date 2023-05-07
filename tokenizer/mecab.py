@@ -8,7 +8,7 @@ from tokenizer.base import BaseTokenizer
 
 class MeCabTokenizer(BaseTokenizer):
     def __init__(self, config_path: str, mecab_path: str = "/usr/local/bin/mecab/dic/mecab-ko-dic"):
-        self.mecab = MeCab.Tagger(f"--dicdir {mecab_path}")
+        self.mecab = MeCab.Tagger(f"--dicdir {mecab_path} -r /dev/null")
         with open(config_path) as f:
             self.config: dict = json.load(f)
 
