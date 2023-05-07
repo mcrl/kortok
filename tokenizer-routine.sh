@@ -6,6 +6,11 @@ en_corpus="dataset/modoo-translation/en_sentences.txt"
 merged_corpus="dataset/modoo-translation/merged_sentences.txt"
 mecab_ko_corpus="dataset/modoo-translation/mecab_tokenized/ko_sentences.txt"
 
+# train word tokenizers
+python scripts/build_word_vocab.py \
+    --vocab=64000 \
+    --input_corpus $ko_corpus &
+
 # train jamo tokenizers
 python scripts/build_jamo_vocab.py \
     --vocab=200 \
@@ -37,8 +42,6 @@ python scripts/build_mecab_vocab.py \
     --input_corpus $ko_corpus \
     --dicdir $dict &
 
-# generate mecab tokenized corpus
-
 number_array=(4000 8000 16000 32000 64000)
 for number in "${number_array[@]}"
 do
@@ -52,15 +55,17 @@ do
     python scripts/train_sentencepiece.py \
         --vocab_size $number \
         --tokenizer_type="en" \
+        --normalization_rule_name="nmt_nfkc" \
         --input_en_corpus $en_corpus &
 done
 
-# python scripts/mecab_tokenization.py \
-#     --input_corpus $ko_corpus \
-#     --output_dir dataset/modoo-translation/mecab_tokenized \
-#     --dicdir $dict
+# generate mecab tokenized corpus
+python scripts/mecab_tokenization.py \
+    --input_corpus $ko_corpus \
+    --output_dir dataset/modoo-translation/mecab_tokenized \
+    --dicdir $dict &
 
-# wait
+wait
 
 number_array=(4000 8000 16000 32000 64000)
 for number in "${number_array[@]}"
@@ -70,11 +75,5 @@ do
         --tokenizer_type="mecab_tokenized" \
         --input_mecab_corpus $mecab_ko_corpus &
 done
-
-# slow one: do it last
-# train word tokenizers
-python scripts/build_word_vocab.py \
-    --vocab=64000 \
-    --input_corpus $ko_corpus &
 
 wait
