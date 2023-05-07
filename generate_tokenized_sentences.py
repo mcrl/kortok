@@ -38,21 +38,21 @@ if __name__ == "__main__":
 
     tasks = []
     # create char tokenizer task
-    output_file = "dataset/modoo-translation/tokenized/ko_sentences_char.txt"
+    output_file = "dataset/modoo-translation/tokenized/ko_sentences_char-2k.txt"
     tokenizer = CharTokenizer()
     task = partial(tokenize_sentences, input_file, output_file, tokenizer)
     print(f"char_tokenizer")
     tasks.append(task)
 
     # JamoTokenizer
-    output_file = "dataset/modoo-translation/tokenized/ko_sentences_jamo.txt"
+    output_file = "dataset/modoo-translation/tokenized/ko_sentences_jamo-200.txt"
     tokenizer = JamoTokenizer()
     task = partial(tokenize_sentences, input_file, output_file, tokenizer)
     print(f"jamo_tokenizer")
     tasks.append(task)
 
     # WordTokenizer
-    output_file = "dataset/modoo-translation/tokenized/ko_sentences_word.txt"
+    output_file = "dataset/modoo-translation/tokenized/ko_sentences_word-64k.txt"
     tokenizer = WordTokenizer()
     task = partial(tokenize_sentences, input_file, output_file, tokenizer)
     print(f"word_tokenizer")
