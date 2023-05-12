@@ -13,7 +13,8 @@ function train(){
     --batch-size 256 \
     --save-dir ckpt/${en_dic}-${ko_dic}/en-ko \
     --disable-validation \
-    --memory-efficient-fp16
+    --memory-efficient-fp16 \
+    --save-interval 5
 }
 
 train char-2k
