@@ -118,3 +118,4 @@ separated/
 logs/
 ckpt
 translation_ckpt/
+wiki*
