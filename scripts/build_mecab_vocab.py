@@ -50,6 +50,7 @@ if __name__ == "__main__":
     parser.add_argument("--bos_piece", type=str, default="[BOS]", help="index=2")
     parser.add_argument("--eos_piece", type=str, default="[EOS]", help="index=3")
     parser.add_argument("--input_corpus", type=str, default=INPUT_CORPUS, help="input corpus path")
+    parser.add_argument("--output_dir", type=str, default=OUTPUT_DIR, help="output directory")
     parser.add_argument("--dicdir", type=str, default=DEFAULT_DICT, help="mecab dictionary directory")
     parser.add_argument(
         "--special_symbols",
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     print(args)
 
     global_tokenizer = MeCab.Tagger(f"-r /dev/null --dicdir {args['dicdir']}")
-    output_dir = os.path.join(OUTPUT_DIR, f"mecab-{args['vocab_size']//1000}k")
+    output_dir = os.path.join(args["output_dir"], f"mecab-{args['vocab_size']//1000}k")
     os.makedirs(output_dir, exist_ok=True)
     if global_tokenizer is None:
         raise RuntimeError("global_tokenizer is not initialized.")

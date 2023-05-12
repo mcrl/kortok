@@ -20,6 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("--bos_piece", type=str, default="[BOS]", help="index=2")
     parser.add_argument("--eos_piece", type=str, default="[EOS]", help="index=3")
     parser.add_argument("--input_corpus", type=str, default=INPUT_CORPUS, help="input corpus path")
+    parser.add_argument("--output_dir", type=str, default=OUTPUT_DIR, help="output directory")
     parser.add_argument(
         "--special_symbols",
         type=str,
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     print(args)
 
     # set output dir
-    output_dir = os.path.join(OUTPUT_DIR, f"word-{args['vocab_size']//1000}k")
+    output_dir = os.path.join(args["output_dir"], f"word-{args['vocab_size']//1000}k")
     os.makedirs(output_dir, exist_ok=True)
 
     # save arguments info
