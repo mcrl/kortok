@@ -116,5 +116,5 @@ venv.bak/
 resources/
 separated/
 logs/
-ckpt/
+ckpt
 translation_ckpt/
