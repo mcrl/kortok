@@ -4,16 +4,17 @@ workers=4
 srclang=en
 destlang=ko
 
+data_src=modoo-translation
 resourcedir=resources
 
 function submit {
     source_dict=$1
     target_dict=$2
     job_name="${source_dict}-${target_dict}"
-    datadir=$PWD/dataset/modoo-translation/$job_name
-    srclang_srcdir=$PWD/dataset/modoo-translation/tokenized/$source_dict
-    destlang_srcdir=$PWD/dataset/modoo-translation/tokenized/$target_dict
-    dest=$PWD/dataset/modoo-translation/$job_name/preprocessed/$srclang-$destlang
+    datadir=$PWD/dataset/$data_src/$job_name
+    srclang_srcdir=$PWD/dataset/$data_src/tokenized/$source_dict
+    destlang_srcdir=$PWD/dataset/$data_src/tokenized/$target_dict
+    dest=$PWD/dataset/$data_src/$job_name/preprocessed/$srclang-$destlang
 
     rm -rf $dest
     rm -rf $datadir
