@@ -1,17 +1,17 @@
 #!/bin/bash
 
 en_dic=en_sp-64k
-src_lang=en
-dest_lang=ko
-ckpt_dir=ckpt-wiki-enko
+src_lang=ko
+dest_lang=en
+ckpt_dir=ckpt-wiki-koen
 data_dir=wiki-0420
 
 function task(){
     ko_dic=$1
     device=$2
 
-    left_dic=$en_dic
-    right_dic=$ko_dic
+    left_dic=$ko_dic
+    right_dic=$en_dic
     ckpt=${ckpt_dir}/${left_dic}-${right_dic}/${src_lang}-${dest_lang}/checkpoint_last.pt
     CUDA_VISIBLE_DEVICES=$device \
     fairseq-generate dataset/${data_dir}/${left_dic}-${right_dic}/preprocessed/${src_lang}-${dest_lang} \
