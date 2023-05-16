@@ -4,6 +4,7 @@ from tqdm import tqdm
 from functools import partial
 import os
 from multiprocessing import Process
+from argparse import ArgumentParser
 
 DICT_PATH = "/home/n5/chanwoo/utils/mecab-ko/lib/mecab/dic/mecab-ko-dic"
 KO_CORPUSES = [
@@ -16,6 +17,8 @@ EN_CORPUSES = [
     Path("dataset/modoo-translation/processed/validation.en"),
     Path("dataset/modoo-translation/processed/test.en"),
 ]
+OUTPUT_PATH = "dataset/wiki-0420/tokenized"
+RESOURCES = "resources"
 
 
 def tokenize_sentences(input_file, output_file, tokenizer: BaseTokenizer, pbar=False):
@@ -34,12 +37,16 @@ def tokenize_sentences(input_file, output_file, tokenizer: BaseTokenizer, pbar=F
 
 
 if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument("--resources", type=str, default=RESOURCES)
+    args = parser.parse_args()
     processes = []
-    resources = os.listdir("resources")
+    resources = os.listdir(args.resources)
+    os.makedirs(OUTPUT_PATH, exist_ok=True)
 
     tokenizer = CharTokenizer()
     for input_file in KO_CORPUSES:
-        output_file = f"dataset/modoo-translation/tokenized/char-2k/{input_file.name}"
+        output_file = f"{OUTPUT_PATH}/char-2k/{input_file.name}"
         task = partial(tokenize_sentences, input_file, output_file, tokenizer)
         process = Process(target=task)
         process.start()
@@ -49,7 +56,7 @@ if __name__ == "__main__":
     # JamoTokenizer
     tokenizer = JamoTokenizer()
     for input_file in KO_CORPUSES:
-        output_file = f"dataset/modoo-translation/tokenized/jamo-200/{input_file.name}"
+        output_file = f"{OUTPUT_PATH}/jamo-200/{input_file.name}"
         task = partial(tokenize_sentences, input_file, output_file, tokenizer)
         process = Process(target=task)
         process.start()
@@ -61,7 +68,7 @@ if __name__ == "__main__":
     for mecab_resource in mecab_resources:
         tokenizer = MeCabTokenizer(mecab_path=DICT_PATH, config_path=f"resources/{mecab_resource}/tok.json")
         for input_file in KO_CORPUSES:
-            output_file = f"dataset/modoo-translation/tokenized/{mecab_resource}/{input_file.name}"
+            output_file = f"{OUTPUT_PATH}/{mecab_resource}/{input_file.name}"
             task = partial(tokenize_sentences, input_file, output_file, tokenizer)
             process = Process(target=task)
             process.start()
@@ -73,7 +80,7 @@ if __name__ == "__main__":
     for sp_resource in sp_resources:
         tokenizer = SentencePieceTokenizer(model_path=f"resources/{sp_resource}/tok.model")
         for input_file in KO_CORPUSES:
-            output_file = f"dataset/modoo-translation/tokenized/{sp_resource}/{input_file.name}"
+            output_file = f"{OUTPUT_PATH}/{sp_resource}/{input_file.name}"
             task = partial(tokenize_sentences, input_file, output_file, tokenizer)
             process = Process(target=task)
             process.start()
@@ -85,7 +92,7 @@ if __name__ == "__main__":
     for en_sp_resource in en_sp_resources:
         tokenizer = SentencePieceTokenizer(model_path=f"resources/{en_sp_resource}/tok.model")
         for input_file in EN_CORPUSES:
-            output_file = f"dataset/modoo-translation/tokenized/{en_sp_resource}/{input_file.name}"
+            output_file = f"{OUTPUT_PATH}/{en_sp_resource}/{input_file.name}"
             task = partial(tokenize_sentences, input_file, output_file, tokenizer)
             process = Process(target=task)
             process.start()
@@ -100,7 +107,7 @@ if __name__ == "__main__":
             sp=SentencePieceTokenizer(model_path=f"resources/{mecab_sp_resource}/tok.model"),
         )
         for input_file in KO_CORPUSES:
-            output_file = f"dataset/modoo-translation/tokenized/{mecab_sp_resource}/{input_file.name}"
+            output_file = f"{OUTPUT_PATH}/{mecab_sp_resource}/{input_file.name}"
             task = partial(tokenize_sentences, input_file, output_file, tokenizer)
             process = Process(target=task)
             process.start()
@@ -113,7 +120,7 @@ if __name__ == "__main__":
     print("WordTokenizer")
     tokenizer = WordTokenizer()
     for input_file in KO_CORPUSES:
-        output_file = f"dataset/modoo-translation/tokenized/word-64k/{input_file.name}"
+        output_file = f"{OUTPUT_PATH}/word-64k/{input_file.name}"
         task = partial(tokenize_sentences, input_file, output_file, tokenizer)
         task(pbar=True)
 

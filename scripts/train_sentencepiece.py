@@ -79,6 +79,8 @@ if __name__ == "__main__":
     cmd += f"--eos_piece={args['eos_piece']} "
     cmd += f"--unk_surface={args['unk_surface']} "
     cmd += f"--user_defined_symbols={args['special_symbols']} "
+    cmd += f"--input_sentence_size=10000000 "
+    cmd += f"--shuffle_input_sentence=true "
 
     spm.SentencePieceTrainer.Train(cmd)
 
