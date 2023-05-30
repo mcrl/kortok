@@ -2,6 +2,8 @@
 
 > Experiment Space for Cho
 
+> **- Note that post-slack commands in the scripts won't work. DO NOT DIRECTLY USE THE SCRIPT**
+
 ## Write Codes
 
 + Implement a tokenizer class that extends [BaseTokenizer](tokenizer/base.py)
