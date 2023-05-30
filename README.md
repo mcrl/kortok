@@ -2,7 +2,7 @@
 
 > Experiment Space for Cho
 
-> **- Note that post-slack commands in the scripts won't work. DO NOT DIRECTLY USE THE SCRIPT**
+> **- Note that post-slack commands in the scripts won't work. Do not use the scripts without modification.**
 
 ## Write Codes
 
