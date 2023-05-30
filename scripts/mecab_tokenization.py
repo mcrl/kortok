@@ -16,6 +16,9 @@ global_tokenizer = None  # type: Optional[MeCab.Tagger]
 
 
 def tokenize(text: str, space_symbol: str = "▃") -> List[str]:
+    # empty string or only spaces
+    if not text or text.isspace():
+        return []
     text = text.strip()
     text_ptr = 0
     tokenized = []
@@ -28,7 +31,9 @@ def tokenize(text: str, space_symbol: str = "▃") -> List[str]:
             if text[text_ptr] == " ":
                 while text[text_ptr] == " ":
                     text_ptr += 1
-                assert text[text_ptr] == token[0]
+                if text[text_ptr] != token[0]:
+                    print(f"token: {token[0]}, text: {text[text_ptr]}")
+                    assert text[text_ptr] == token[0]
 
                 tokenized.append(space_symbol)
 
