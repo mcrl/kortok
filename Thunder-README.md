@@ -5,9 +5,13 @@
 As fairseq requirements have been changed, we need different version of packages.
 We update package version to up-to-date ones, and maintain the code.
 
+> **COMPILE APEX WITH AKMU A NODES: OTHERWISE APEX WILL NOT COMPILE**
+>
+> OR INSTALL CUDNN
+
 ```bash
 conda activate kakao-kortok
-conda install python=3.9 -y # sentencepiece only supports python=3.9
+conda install python=3.9 -y # sentencepiece only supports python<=3.9
 conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia -y
 pip install sentencepiece packaging konlpy scikit-learn mosestokenizer scipy transformers mecab-python3
 
