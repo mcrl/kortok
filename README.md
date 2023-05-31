@@ -2,6 +2,8 @@
 
 > Experiment Space for Cho
 
+> **- Note that post-slack commands in the scripts won't work. Do not use the scripts without modification.**
+
 ## Installation
 
 [Reference](Thundr-README.md)
