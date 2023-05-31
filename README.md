@@ -2,6 +2,10 @@
 
 > Experiment Space for Cho
 
+## Installation
+
+[Reference](Thundr-README.md)
+
 ## Write Codes
 
 + Implement a tokenizer class that extends [BaseTokenizer](tokenizer/base.py)
