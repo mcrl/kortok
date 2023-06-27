@@ -7,7 +7,7 @@ import torch
 from torch.utils.data import DataLoader, RandomSampler
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
-
+from transformers import AutoModel, AutoTokenizer
 from tasks.bert_utils import load_pretrained_bert
 from tasks.korsts.config import TrainConfig
 from tasks.korsts.data_utils import load_data
@@ -56,6 +56,8 @@ def main(args):
     # 기본적인 모듈들 생성 (vocab, tokenizer)
     tokenizer_dir = os.path.join(config.resource_dir, config.tokenizer)
     logger.info(f"get vocab and tokenizer from {tokenizer_dir}")
+
+    # vocab?
     vocab = Vocab(os.path.join(tokenizer_dir, "tok.vocab"))
     if config.tokenizer.startswith("mecab-"):
         tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, "tok.json"))
@@ -71,6 +73,8 @@ def main(args):
         tokenizer = WordTokenizer()
     elif config.tokenizer.startswith("jamo-"):
         tokenizer = JamoTokenizer()
+    elif config.tokenizer.startswith("klue"):
+        tokenizer = AutoTokenizer.from_pretrained("klue/bert-base")
     else:
         raise ValueError("Wrong tokenizer name.")
 

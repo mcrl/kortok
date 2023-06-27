@@ -13,7 +13,10 @@ class KorSTSModel(nn.Module):
         self.classifier = nn.Linear(bert_config.hidden_size, 1)
 
     def forward(self, input_token_ids: torch.Tensor, attention_mask: torch.Tensor, token_type_ids: torch.Tensor):
-        _, pooled_output = self.bert.forward(input_token_ids, attention_mask, token_type_ids)
+        model_output = self.bert.forward(input_token_ids, attention_mask, token_type_ids)
+        # _, pooled_output = model_output
+        # whyrano? I don't know the syntax but this works...
+        pooled_output = model_output[1]
         output_drop = self.dropout(pooled_output)
         logits = self.classifier(output_drop)
 
