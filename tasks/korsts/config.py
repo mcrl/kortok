@@ -40,11 +40,11 @@ class TrainConfig(NamedTuple):
     Data Hyperparameters
     """
     #: training data 파일 경로
-    train_path: str = "./dataset/nlu_tasks/korsts/sample_sts-train.tsv"
+    train_path: str = "./dataset/nlu_tasks/korsts/sts-train.tsv"
     #: dev data 파일 경로
-    dev_path: str = "./dataset/nlu_tasks/korsts/sample_sts-dev.tsv"
+    dev_path: str = "./dataset/nlu_tasks/korsts/sts-dev.tsv"
     #: test data 파일 경로
-    test_path: str = "./dataset/nlu_tasks/korsts/sample_sts-test.tsv"
+    test_path: str = "./dataset/nlu_tasks/korsts/sts-test.tsv"
     #: output dir
     log_dir: str = "./run_outputs/{}/korsts/logs"
     summary_dir: str = "./run_outputs/{}/korsts/summaries"

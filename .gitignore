@@ -124,3 +124,6 @@ mcrl-scripts/
 gpt-logs/
 checkpoints
 pretrain_gpt/
+
+klue.bert/
+klue.tok/
