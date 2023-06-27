@@ -26,3 +26,24 @@ pip install --editable ./
 popd
 popd
 ```
+
+## Meeting Requirements for Huggingface and KorTok
+
+```bash
+conda activate kortok-gpt
+conda install python=3.9 -y
+
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+
+# install jaxlib via pypi.
+# As our cluster supported cudnn 8.7, we installed jaxlib 0.4.10+cuda11.cudnn86
+pip install --upgrade "jax[cuda11_pip]" \
+    -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+pip install flax
+
+# install other huggingface libraries
+pip install datasets evaluate accelerate
+
+# miscellaneous package
+pip install pytest
+```

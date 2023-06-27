@@ -1,5 +1,6 @@
 import argparse
 import os
+from pathlib import Path
 import random
 
 import numpy as np
@@ -8,13 +9,7 @@ from torch.utils.data import DataLoader, RandomSampler
 from torch.utils.tensorboard import SummaryWriter
 from transformers import BertConfig
 
-from tasks.bert_utils import load_pretrained_bert
-from tasks.logger import get_logger
-from tasks.paws.config import TrainConfig
-from tasks.paws.data_utils import load_data
-from tasks.paws.dataset import PAWSDataset
-from tasks.paws.model import PAWSModel
-from tasks.paws.trainer import Trainer
+
 from tokenizer import (
     CharTokenizer,
     JamoTokenizer,
@@ -25,8 +20,10 @@ from tokenizer import (
     WordTokenizer,
 )
 
+from pretrain_gpt.logger import get_logger
 
-def set_seed(seed):
+
+def set_seed(seed=42):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -35,47 +32,57 @@ def set_seed(seed):
     torch.backends.cudnn.benchmark = False
 
 TOK_INFO_JSON = "build_info.json"
+VOCAB_FILE="tok.vocab"
 MODEL_INFO_TXT = "tok.model"
+CKPT_DIR = "checkpoints"
+LOG_DIR = "gpt-logs"
+MECAB_DICT = "/home/n5/chanwoo/utils/mecab-ko/lib/mecab/dic/mecab-ko-dic"
+DEFAULT_RESOURCE_DIR = "wiki-tokenizers"
 
 def main(args):
     # config
-    config = TrainConfig(**args)
-    config = config._replace(
-        log_dir=config.log_dir.format(config.tokenizer),
-        summary_dir=config.summary_dir.format(config.tokenizer),
-        checkpoint_dir=config.checkpoint_dir.format(config.tokenizer),
-    )
-    set_seed(config.seed)
+    set_seed(42)
 
-    os.makedirs(config.log_dir, exist_ok=True)
-    os.makedirs(config.summary_dir, exist_ok=True)
-    # os.makedirs(config.checkpoint_dir, exist_ok=True)
+    experiment_name = args.name if args.name else args.tokenizer_name
 
-    # logger
-    logger = get_logger(log_path=os.path.join(config.log_dir, "logs.txt"))
-    logger.info(config)
+    checkpoint_dir = os.path.join(CKPT_DIR, experiment_name)
+    log_dir = os.path.join(LOG_DIR, experiment_name)
+    
+    checkpoint_dir_path = Path(checkpoint_dir)
+    if not checkpoint_dir_path.exists():
+        checkpoint_dir_path.mkdir(parents=True)
+    log_dir_path = Path(log_dir)
+    if not log_dir_path.exists():
+        log_dir_path.mkdir(parents=True)
+    
+    logger = get_logger(log_path=os.path.join(log_dir, "logs.txt"))
+    logger.info(f"Setting up {experiment_name} experiment...")
+    logger.info(f"Checkpoint directory: {checkpoint_dir}")
+    logger.info(f"Log directory: {log_dir}")
 
     # 기본적인 모듈들 생성 (vocab, tokenizer)
-    tokenizer_dir = os.path.join(config.resource_dir, config.tokenizer)
+    tokenizer_name = args.tokenizer_name
+    tokenizer_dir = os.path.join(args.resource_dir, tokenizer_name)
     logger.info(f"get vocab and tokenizer from {tokenizer_dir}")
-    vocab = Vocab(os.path.join(tokenizer_dir, TOK_INFO_JSON))
-    if config.tokenizer.startswith("mecab-"):
-        tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, TOK_INFO_JSON))
-    elif config.tokenizer.startswith("sp-"):
+    vocab = Vocab(os.path.join(tokenizer_dir, VOCAB_FILE))
+    if tokenizer_name.startswith("mecab-"):
+        tokenizer = MeCabTokenizer(os.path.join(tokenizer_dir, TOK_INFO_JSON),mecab_path=MECAB_DICT)
+    elif tokenizer_name.startswith("sp-"):
         tokenizer = SentencePieceTokenizer(os.path.join(tokenizer_dir, MODEL_INFO_TXT))
-    elif config.tokenizer.startswith("mecab_sp-"):
-        mecab = MeCabTokenizer(os.path.join(tokenizer_dir, TOK_INFO_JSON))
+    elif tokenizer_name.startswith("mecab_sp-"):
+        mecab = MeCabTokenizer(os.path.join(tokenizer_dir, TOK_INFO_JSON), mecab_path=MECAB_DICT)
         sp = SentencePieceTokenizer(os.path.join(tokenizer_dir, MODEL_INFO_TXT))
         tokenizer = MeCabSentencePieceTokenizer(mecab, sp)
-    elif config.tokenizer.startswith("char-"):
+    elif tokenizer_name.startswith("char-"):
         tokenizer = CharTokenizer()
-    elif config.tokenizer.startswith("word-"):
+    elif tokenizer_name.startswith("word-"):
         tokenizer = WordTokenizer()
-    elif config.tokenizer.startswith("jamo-"):
+    elif tokenizer_name.startswith("jamo-"):
         tokenizer = JamoTokenizer()
     else:
         raise ValueError("Wrong tokenizer name.")
 
+    exit(0)
     # 모델에 넣을 데이터 준비
     # label-to-index
     label_to_index = {"0": 0, "1": 1}
@@ -129,15 +136,11 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--desc", type=str)
-    parser.add_argument("--seed", type=int, defualt=42)
-    parser.add_argument("--tokenizer", type=str)
 
-    parser.add_argument("--resource_dir", type=str)
-    parser.add_argument("--train_path", type=str)
-    parser.add_argument("--dev_path", type=str)
-    parser.add_argument("--test_path", type=str)
+    experiment_group = parser.add_argument_group("experiment")
+    experiment_group.add_argument("--name", type=str)
+    experiment_group.add_argument("--tokenizer-name", type=str, required=True)
+    experiment_group.add_argument("--resource-dir", type=str, default=DEFAULT_RESOURCE_DIR)
 
-    args = {k: v for k, v in vars(parser.parse_args()).items() if v}
-
+    args = parser.parse_args() 
     main(args)

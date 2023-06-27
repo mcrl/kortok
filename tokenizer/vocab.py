@@ -78,9 +78,10 @@ class Vocab:
         vocab: Dict[str, int] = OrderedDict()
         with open(vocab_path, "r") as f:
             for index, token in enumerate(f):
-                token = token.strip().split("\t")[0]
+                token = token[:-1].split("\t")[0]
 
                 if token in vocab:
+                    print(index, token, vocab[token])
                     raise ValueError(f"Vocab에 중복된 토큰 {token}이 있습니다.")
 
                 vocab[token] = index

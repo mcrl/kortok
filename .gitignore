@@ -121,3 +121,6 @@ translation_ckpt/
 wiki*
 ckpt-wiki*
 mcrl-scripts/
+gpt-logs/
+checkpoints
+pretrain_gpt/

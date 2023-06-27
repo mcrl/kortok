@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # MecabTokenizer
     mecab_resources = [r for r in resources if r.startswith("mecab-")]
     for mecab_resource in mecab_resources:
-        tokenizer = MeCabTokenizer(mecab_path=DICT_PATH, config_path=f"resources/{mecab_resource}/tok.json")
+        tokenizer = MeCabTokenizer(mecab_path=DICT_PATH, config_path=f"{resources}/{mecab_resource}/tok.json")
         for input_file in KO_CORPUSES:
             output_file = f"{output_path}/{mecab_resource}/{input_file.name}"
             task = partial(tokenize_sentences, input_file, output_file, tokenizer)
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     # SentencePieceTokenizer
     sp_resources = [r for r in resources if r.startswith("sp-")]
     for sp_resource in sp_resources:
-        tokenizer = SentencePieceTokenizer(model_path=f"resources/{sp_resource}/tok.model")
+        tokenizer = SentencePieceTokenizer(model_path=f"{resources}/{sp_resource}/tok.model")
         for input_file in KO_CORPUSES:
             output_file = f"{output_path}/{sp_resource}/{input_file.name}"
             task = partial(tokenize_sentences, input_file, output_file, tokenizer)
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # en_sp tokenizer
     en_sp_resources = [r for r in resources if r.startswith("en_sp-")]
     for en_sp_resource in en_sp_resources:
-        tokenizer = SentencePieceTokenizer(model_path=f"resources/{en_sp_resource}/tok.model")
+        tokenizer = SentencePieceTokenizer(model_path=f"{resources}/{en_sp_resource}/tok.model")
         for input_file in EN_CORPUSES:
             output_file = f"{output_path}/{en_sp_resource}/{input_file.name}"
             task = partial(tokenize_sentences, input_file, output_file, tokenizer)
@@ -105,8 +105,8 @@ if __name__ == "__main__":
     mecab_sp_resources = [r for r in resources if r.startswith("mecab_sp-")]
     for mecab_sp_resource in mecab_sp_resources:
         tokenizer = MeCabSentencePieceTokenizer(
-            mecab=MeCabTokenizer(mecab_path=DICT_PATH, config_path="resources/mecab-16k/tok.json"),
-            sp=SentencePieceTokenizer(model_path=f"resources/{mecab_sp_resource}/tok.model"),
+            mecab=MeCabTokenizer(mecab_path=DICT_PATH, config_path=f"{resources}/mecab-16k/tok.json"),
+            sp=SentencePieceTokenizer(model_path=f"{resources}/{mecab_sp_resource}/tok.model"),
         )
         for input_file in KO_CORPUSES:
             output_file = f"{output_path}/{mecab_sp_resource}/{input_file.name}"
