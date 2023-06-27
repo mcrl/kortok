@@ -9,3 +9,9 @@
 + datasets
 + konlypy
 + mecab-python3
+
+## Script
+
+```bash
+bash korsts.sh
+```
