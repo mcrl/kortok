@@ -28,7 +28,14 @@ import torch
 from attrdict import AttrDict
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 from tqdm import tqdm
-from transformers import AdamW, BertConfig, get_linear_schedule_with_warmup, squad_convert_examples_to_features
+from transformers import (
+    AdamW,
+    BertConfig,
+    get_linear_schedule_with_warmup,
+    squad_convert_examples_to_features,
+    AutoTokenizer,
+    AutoModel,
+)
 from transformers.data.metrics.squad_metrics import compute_predictions_logits, squad_evaluate
 from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor
 
@@ -362,6 +369,8 @@ def main(cli_args):
         custom_tokenizer = WordTokenizer()
     elif args.tokenizer.startswith("jamo-"):
         custom_tokenizer = JamoTokenizer()
+    elif args.tokenizer.startswith("klue"):
+        custom_tokenizer = AutoTokenizer.from_pretrained("klue/bert-base")
     else:
         raise ValueError("Wrong tokenizer name.")
 

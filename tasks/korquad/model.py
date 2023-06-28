@@ -1,6 +1,6 @@
 import torch.nn as nn
 from torch.nn import CrossEntropyLoss
-from transformers.modeling_bert import BertModel, BertPreTrainedModel
+from transformers import BertModel, BertPreTrainedModel
 
 
 class KorQuADModel(BertPreTrainedModel):
